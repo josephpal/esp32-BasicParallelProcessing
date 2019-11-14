@@ -9,7 +9,22 @@ But due to the fact that we only have two cores, there  would be only two possib
 The main aim of this little project is to focus on a basic computation, which can be splitted into sub tasks.
 
 ```
+void Computation::compute() {
+	long count = 0;
 
+	for (int i = getLoopOneStart(); i < getLoopOneEnd(); i++) {
+		for (int j = getLoopTwoStart(); j < getLoopTwoEnd(); j++) {
+			count += i * j;
+		}
+	}
+
+	/*
+	 *  push back the result to the receiver of the queue
+	 *  "he" is actually waiting for the result until its transmitted
+	 */
+
+	xQueueSend(*queue, &count, portMAX_DELAY);
+}
 ```
 
 ## Benchmark setup
