@@ -8,7 +8,7 @@ But due to the fact that we only have two cores, there  would be only two possib
 
 The main aim of this little project is to focus on a basic computation, which can be splitted into sub tasks.
 
-<p align="center"><img width="50%" src="mathProblem.png"></p>
+<p align="center"><img width="50%" src="documentation/mathProblem.png"></p>
 
 This mathematical problem is implemented in the class [Computation.h]() and can be executed with calling the function `compute()`.
 
