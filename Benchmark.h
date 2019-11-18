@@ -13,13 +13,14 @@
 
 class Benchmark {
 public:
-	/** Overloaded constructor, durationCycles and coolDownTimer will be set on @param
+	/** Overloaded constructor; durationCycles, coolDownTimer and queue size will be set on @param
      *
      *  @param	set the amount of cycles @durationCycles per computation to average the result
      *  @param	set a specific delay @coolDownTimer in ms between multiple calls of the benchmark
+     *  @param  determine the size of the queue object for message passing between the threads
      *  @return ---
     */
-	Benchmark(int durationCycles, int coolDownTimer);
+	Benchmark(int durationCycles, int coolDownTimer, int queueSize);
 	~Benchmark();
 
 	/** start the computation benchmark and set the number of threads, which will be created to solve the problem

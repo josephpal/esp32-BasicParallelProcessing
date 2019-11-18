@@ -46,15 +46,19 @@ void setup() {
      * 	...
      *
      * 	duration -> number of maximal threads
+     *
+     *	tested with: 8, 16, 32, 64 threads successfully (on ESP32 DEV and TTGO LORA SX1278 ESP32 module)
+     *	-> for possible ESP32 crashes, decrease the heap size being allocated for creating the tasks
+     *	-> note: could be optimized (calculate the size in words of a computation object)
      */
-    int durations = 32;
+    int numOfRunningThreads = 64;
 
     /*
      *  results[]: array filled with the different execution times
      *  speedup[]: array filled with the calculated speedup factor
      */
-    float *results[durations];
-    float *speedup[durations];
+    float *results[numOfRunningThreads];
+    float *speedup[numOfRunningThreads];
 
     /*
      *  initializing the benchmark class:
@@ -64,10 +68,10 @@ void setup() {
      *  -> setMaxNumOfThreads is currently limited to the total number of dedicated cores.
      *     To allow multiple threads on each core, you have to set the threshold higher
      */
-    Benchmark bench(1, 1500);
-    bench.setMaxNumOfThreads(durations);
+    Benchmark bench(1, 1500, numOfRunningThreads);
+    bench.setMaxNumOfThreads(numOfRunningThreads);
 
-    for (int i = 0; i < durations; ++i) {
+    for (int i = 0; i < numOfRunningThreads; ++i) {
         Serial.print("[main] Performing benchmark number ");
         Serial.print(i + 1);
         Serial.println(" started ...");
@@ -94,9 +98,9 @@ void setup() {
      */
     Serial.print("number of threads:\t[\t");
 
-    for (int j = 0; j < durations; ++j) {
+    for (int j = 0; j < numOfRunningThreads; ++j) {
 		Serial.print( j + 1 );
-  		Serial.print("\t");
+  		Serial.print("\t\t");
 	}
 
     Serial.println("]");
@@ -107,7 +111,7 @@ void setup() {
 	 */
     Serial.print("execution time:\t\t[\t");
 
-	for (int k = 0; k < durations; ++k) {
+	for (int k = 0; k < numOfRunningThreads; ++k) {
 		Serial.print( (int)*results[k] );
 		Serial.print("\t");
 	}
@@ -122,7 +126,7 @@ void setup() {
 	 */
     Serial.print("total speedup:\t\t[\t");
 
-    for (int l = 0; l < durations; ++l) {
+    for (int l = 0; l < numOfRunningThreads; ++l) {
     	speedup[l] = new float(*results[0] / *results[l]);
 		Serial.print( *speedup[l] );
 		Serial.print("\t");
@@ -137,9 +141,9 @@ void setup() {
      */
     Serial.print("core number:\t\t[\t");
 
-	for (int m = 0; m < durations; ++m) {
+	for (int m = 0; m < numOfRunningThreads; ++m) {
 		Serial.print( (m+1)%2 );
-		Serial.print("\t");
+		Serial.print("\t\t");
 	}
 
 	Serial.println("]");

@@ -8,6 +8,7 @@
 #include "Benchmark.h"
 
 void producerTask(void * params) {
+
 	Computation *comp = (Computation*) params;
 
 	comp->compute();
@@ -18,7 +19,7 @@ void producerTask(void * params) {
 	vTaskDelete( NULL );
 }
 
-Benchmark::Benchmark(int durationCycles, int coolDownTimer) {
+Benchmark::Benchmark(int durationCycles, int coolDownTimer, int queueSize) {
 	this->durationCycles = durationCycles > 0 ? durationCycles : 4;
 	this->coolDownTimer = coolDownTimer > 0 ? coolDownTimer : 1500;
 
@@ -26,11 +27,11 @@ Benchmark::Benchmark(int durationCycles, int coolDownTimer) {
 	this->upperLimitMul = 10000;
 
 	queue = new QueueHandle_t();
-	queueSize = 16;
+	this->queueSize = queueSize;
 
 	*queue = xQueueCreate( queueSize, sizeof( long ) );
 
-	maxNumOfThreads = 2;
+	maxNumOfThreads = queueSize;
 }
 
 Benchmark::~Benchmark() {
@@ -109,10 +110,20 @@ float Benchmark::runWith(int numOfThreads, int numOfCycles) {
 			Serial.print(";");
 			Serial.println(c[j]->getLoopOneEnd());
 
+			// Serial.print(" -> stack size allocation : ");
+			// Serial.println(sizeof(c[j]) * 32 * 8);				/* https://github.com/espressif/arduino-esp32/issues/1745 */
+																	/* https://www.arduino.cc/en/pmwiki.php?n=Reference/Sizeof */
+																	/* https://www.freertos.org/vTaskGetInfo.html */
+																	/* https://www.esp32.com/viewtopic.php?t=4295 */
+																	/* Serial.println(uxTaskGetStackHighWaterMark(NULL)); in task for left stack size */
+
 			xTaskCreatePinnedToCore(
 						producerTask,     							/* Function to implement the task */
 						(j+1)%2 ==  0 ? "calcTask0" : "calcTask1",  /* Name of the task */
-						10000,            							/* Stack size in words */
+						sizeof(c[j]) * 32 * 8,            			/* Stack size in words: */
+						 	 	 	 	 	 	 	 	 	 	 	/* -> size in words of the computation object: sizeof(c[j]) * 32 */
+																	/* -> multiple by 8 for secure issues (used stack size will increase during runtime) */
+																	/* => total allocated stack size: 1024 */
 						c[j],             							/* Task input parameter */
 						0,                							/* Priority of the task */
 						NULL,             							/* Task handle. */
