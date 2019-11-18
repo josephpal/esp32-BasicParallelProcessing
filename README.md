@@ -30,7 +30,7 @@ void Computation::compute() {
 	xQueueSend(*queue, &count, portMAX_DELAY);
 }
 ```
-It is obvious, based on simple mathematical rules, that the outer sum, which is implemented through the outer for-loop, is divisible by limiting the thresholds, the inner sum unfortunately isn't. So for each part sum it's necessary to calculate the limits, on which each task has to compute their part sum results.
+It is obvious, based on simple mathematical rules, that the outer sum, which is implemented through the outer for-loop, is divisible by limiting the thresholds, the inner sum unfortunately isn't. So for each part sum it's necessary to calculate the limits, on which each task has to compute their part sum results \[see [Benchmark.h]() line 94].
 
 ## Benchmark setup
 
@@ -43,7 +43,7 @@ for (int i = 0; i < numOfRunningThreads; ++i) {
 	results[i] = new float(bench.performBenchmark(i + 1));
 }
 ```
-The queue size represents the maximum number of threads, which can be executed in parallel, because each thread has to return the result to the main thread; this is done by a ESP32 specific [QueueHandle_t](https://techtutorialsx.com/2017/09/13/esp32-arduino-communication-between-tasks-using-freertos-queues/) message passing model between tasks. Keep in mind, that this has an major effect of the available stack or heap size, and of course on the maximum amount of created threads \[QueueHandle_t, see ``Benchmark.h`` line 99 ff.].
+The queue size represents the maximum number of threads, which can be executed in parallel, because each thread has to return the result to the main thread; this is done by a ESP32 specific [QueueHandle_t](https://techtutorialsx.com/2017/09/13/esp32-arduino-communication-between-tasks-using-freertos-queues/) message passing model between tasks. Keep in mind, that this has an major effect of the available stack or heap size, and of course on the maximum amount of created threads \[for more information about the QueueHandle_t thread communication, see ``Benchmark.h`` line 99 ff.].
 
 The result of executing the computation with a specific number of threads is the execution time in milliseconds and will be returned as a float value by calling the function `` bench.performBenchmark(numOfThreads))``.
 
