@@ -45,6 +45,8 @@ for (int i = 0; i < numOfRunningThreads; ++i) {
 ```
 The queue size represents the maximum number of threads, which can be executed in parallel, because each thread has to return the result to the main thread; this is done by a ESP32 specific [QueueHandle_t](https://techtutorialsx.com/2017/09/13/esp32-arduino-communication-between-tasks-using-freertos-queues/) message passing model between tasks. Keep in mind, that this has an major effect of the available stack or heap size, and of course on the maximum amount of created threads \[for more information about the QueueHandle_t thread communication, see [Benchmark.h](https://github.com/josephpal/esp32-BasicParallelProcessing/blob/master/Benchmark.h) line 99 ff.].
 
+<p align="center"><img width="75%" src="documentation/part-sum-message-passing.png"></p>
+
 The result of executing the computation with a specific number of threads is the execution time in milliseconds and will be returned as a float value by calling the function `` bench.performBenchmark(numOfThreads))``.
 
 ## Evaluation
