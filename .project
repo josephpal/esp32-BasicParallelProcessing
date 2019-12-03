@@ -39,7 +39,7 @@
 		<link>
 			<name>core/variant</name>
 			<type>2</type>
-			<location>/home/joseph/Arduino/hardware/espressif/esp32/variants/ttgo-lora32-v1</location>
+			<location>/home/joseph/Arduino/hardware/espressif/esp32/variants/esp32</location>
 		</link>
 		<link>
 			<name>libraries/Adafruit_GFX_Library</name>

@@ -104,7 +104,7 @@ float Benchmark::runWith(int numOfThreads, int numOfCycles) {
 			Serial.print("[task] Thread ");
 			Serial.print(j);
 			Serial.print(" on core [");
-			Serial.print((j+1)%2);
+			Serial.print((j+2)%2);
 			Serial.print("] -> ");
 			Serial.print(c[j]->getLoopOneStart());
 			Serial.print(";");
@@ -119,7 +119,7 @@ float Benchmark::runWith(int numOfThreads, int numOfCycles) {
 
 			xTaskCreatePinnedToCore(
 						producerTask,     							/* Function to implement the task */
-						(j+1)%2 ==  0 ? "calcTask0" : "calcTask1",  /* Name of the task */
+						(j+2)%2 ==  0 ? "calcTask0" : "calcTask1",  /* Name of the task */
 						sizeof(c[j]) * 32 * 8,            			/* Stack size in words: */
 						 	 	 	 	 	 	 	 	 	 	 	/* -> size in words of the computation object: sizeof(c[j]) * 32 */
 																	/* -> multiple by 8 for secure issues (used stack size will increase during runtime) */
@@ -127,7 +127,7 @@ float Benchmark::runWith(int numOfThreads, int numOfCycles) {
 						c[j],             							/* Task input parameter */
 						0,                							/* Priority of the task */
 						NULL,             							/* Task handle. */
-						(j+1)%2);         							/* Core where the task should run -> toggle between 0,1 if user try */
+						(j+2)%2);         							/* Core where the task should run -> toggle between 0,1 if user try */
 																	/* to run multiple threads on a dual core processor */
 		}
 
@@ -148,7 +148,7 @@ float Benchmark::runWith(int numOfThreads, int numOfCycles) {
 			Serial.print("[bench] Received (part) result from thread ");
 			Serial.print(k);
 			Serial.print(" on core ");
-			Serial.println((k+1)%2);
+			Serial.println((k+2)%2);
 
 			result += partResult;
 		}
