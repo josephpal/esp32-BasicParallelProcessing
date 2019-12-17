@@ -85,7 +85,7 @@ private:
 	 *  		the private variable @durationCycles will be used for that
 	 *  @return will return the needed execution time
 	*/
-	float runWith(int numOfThreads, int numOfCycles);
+	float runComputationWith(int numOfThreads, int numOfCycles);
 
 	/*
 	 *  durationCycles	amount of durations per computation to average the result

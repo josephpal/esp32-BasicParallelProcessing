@@ -57,6 +57,11 @@
 			<location>/home/joseph/Arduino/hardware/espressif/esp32/libraries/FS</location>
 		</link>
 		<link>
+			<name>libraries/FreeRTOS</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/FreeRTOS/10.2.0-3</locationURI>
+		</link>
+		<link>
 			<name>libraries/SPI</name>
 			<type>2</type>
 			<location>/home/joseph/Arduino/hardware/espressif/esp32/libraries/SPI</location>

@@ -67,13 +67,13 @@ float Benchmark::performBenchmark(int numOfThreads) {
 		Serial.println("[bench] error: Number of maximal threads reached!");
 		Serial.print("[bench] error: running with maxNumOfThreads => ");
 		Serial.println(maxNumOfThreads);
-		return runWith(maxNumOfThreads, durationCycles);
+		return runComputationWith(maxNumOfThreads, durationCycles);
 	} else {
-		return runWith(numOfThreads, durationCycles);
+		return runComputationWith(numOfThreads, durationCycles);
 	}
 }
 
-float Benchmark::runWith(int numOfThreads, int numOfCycles) {
+float Benchmark::runComputationWith(int numOfThreads, int numOfCycles) {
 	long average = 0;
 	long result = 0;
 
